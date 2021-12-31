@@ -1,0 +1,6 @@
+node_modules
+dist
+.eslintrc.js
+pnpm-lock.yaml
+CHANGELOG.md
+!.*

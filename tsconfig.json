@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "module": "ESNext",
+    "target": "ES6",
+    "declaration": true,
+    "moduleResolution": "Node",
+    "esModuleInterop": true,
+    "jsx": "preserve",
+    "sourceMap": true,
+    "lib": ["esnext", "DOM"],
+    "skipLibCheck": true
+  },
+  "include": ["packages"],
+  "exclude": ["node_modules"]
+}

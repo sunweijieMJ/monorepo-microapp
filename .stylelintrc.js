@@ -1,7 +1,12 @@
 module.exports = {
-  extends: ['stylelint-config-standard', 'stylelint-config-sass-guidelines'],
-  plugins: ['stylelint-order'],
+  extends: [
+    'stylelint-config-standard',
+    'stylelint-config-sass-guidelines',
+    'stylelint-prettier/recommended',
+  ],
+  plugins: ['stylelint-order', 'stylelint-prettier'],
   rules: {
+    // 'prettier/prettier': true,
     'max-nesting-depth': 5, // 限制嵌套深度
     // 'selector-class-pattern': '^[a-z][a-zA-Z0-9_-]+$|^el-|^mz-', // 为类选择器指定一个匹配模式
     // 'declaration-block-trailing-semicolon': null, // 要求或禁止在声明块中使用拖尾分号

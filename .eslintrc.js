@@ -31,10 +31,11 @@ module.exports = defineConfig({
       'import',
       'html',
       'vue',
+      'svelte3'
     ],
     overrides: [
       {
-        files: ['**/*.ts', '**/*.tsx', '**/*.vue'],
+        files: ['**/*.ts', '**/*.tsx', '**/*.vue', '**/*.svelte'],
         rules: {
           'import/extensions': [
             'error',
@@ -47,14 +48,19 @@ module.exports = defineConfig({
             }
           ] // 忽略文件后缀
         },
+      },
+      {
+        files: ['*.svelte'],
+        processor: 'svelte3/svelte3',
       }
     ],
     settings: {
       'import/resolver': {
         alias: {
-          extensions: ['.js', '.jsx', '.ts', 'tsx']
+          extensions: ['.js', '.jsx', '.ts', '.tsx', '.svelte']
         }
-      }
+      },
+      'svelte3/ignore-styles': () => true // 针对svelte文件忽略style标签的检测
     },
     rules: {
       'no-console': process.env.NODE_ENV === 'production' ? ['error', { allow: ['warn', 'error'] }] : 'off', // 禁用 console

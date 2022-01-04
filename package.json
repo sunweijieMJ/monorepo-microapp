@@ -13,8 +13,8 @@
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
     "lint": "pnpm run lint:script && pnpm run lint:style && pretty-quick --check --branch dev",
     "lint:fix": "pnpm run lint:script && pnpm run lint:style && pretty-quick --branch dev",
-    "lint:script": "eslint . --ext .js,.ts,.jsx,.tsx,.vue",
-    "lint:style": "stylelint 'packages/**/*.{css,scss,less,vue}'",
+    "lint:script": "eslint . --ext .js,.ts,.jsx,.tsx,.vue,.svelte",
+    "lint:style": "stylelint 'packages/**/*.{css,scss,less,vue,svelte}'",
     "prepare": "husky install",
     "preinstall": "npx only-allow pnpm -y"
   },
@@ -24,10 +24,10 @@
     }
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx,vue}": [
+    "*.{js,jsx,ts,tsx,vue,svelte}": [
       "pnpm run lint:script"
     ],
-    "*.{css,scss,less,vue}": [
+    "*.{css,scss,less,vue,svelte}": [
       "pnpm run lint:style"
     ]
   },
@@ -45,6 +45,7 @@
     "eslint-plugin-html": "6.2.0",
     "eslint-plugin-import": "2.25.3",
     "eslint-plugin-prettier": "4.0.0",
+    "eslint-plugin-svelte3": "^3.2.1",
     "eslint-plugin-vue": "8.1.1",
     "husky": "^7.0.4",
     "lint-staged": "^12.1.4",

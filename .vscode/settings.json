@@ -1,13 +1,18 @@
 {
   "typescript.tsdk": "node_modules/typescript/lib",
   "npm.packageManager": "pnpm",
-  "stylelint.validate": ["css", "less", "postcss", "scss", "vue", "sass"],
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": false,
     "source.fixAll.stylelint": true
   },
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "files.associations": {
+    "*.svelte": "html"
+  },
+  "[svelte]": {
+    "editor.defaultFormatter": "svelte.svelte-vscode"
+  },
   "eslint.probe": [
     "javascript",
     "javascriptreact",
@@ -15,6 +20,7 @@
     "typescriptreact",
     "html",
     "vue",
+    "svelte",
     "markdown"
   ],
   "eslint.validate": [
@@ -24,7 +30,17 @@
     "typescriptreact",
     "html",
     "vue",
+    "svelte",
     "markdown"
+  ],
+  "stylelint.validate": [
+    "css",
+    "postcss",
+    "less",
+    "scss",
+    "sass",
+    "vue",
+    "svelte"
   ],
   "i18n-ally.localesPaths": "packages/locale/lang",
   "i18n-ally.sourceLanguage": "zh-cn",

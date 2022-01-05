@@ -1,17 +1,42 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import Router from './router';
+import './public-path';
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+declare global {
+  interface Window {
+    __POWERED_BY_QIANKUN__: boolean;
+    __INJECTED_PUBLIC_PATH_BY_QIANKUN__: any;
+  }
+}
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+const isInQiankun = window.__POWERED_BY_QIANKUN__;
+
+function render() {
+  ReactDOM.render(
+    <React.StrictMode>
+      <Router />
+    </React.StrictMode>,
+    document.querySelector('#react-root')
+  );
+}
+
+export async function bootstrap() {
+  console.log('bootstrap');
+}
+
+export async function mount() {
+  console.log('mount');
+  render();
+}
+
+export async function unmount() {
+  console.log('unmount');
+
+  ReactDOM.unmountComponentAtNode(
+    document.querySelector('#react-root') as Element
+  );
+}
+
+// 单独开发环境
+if (!isInQiankun) mount();

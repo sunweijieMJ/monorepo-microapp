@@ -26,13 +26,10 @@ export async function bootstrap() {
 }
 
 export async function mount() {
-  console.log('mount');
   render();
 }
 
 export async function unmount() {
-  console.log('unmount');
-
   ReactDOM.unmountComponentAtNode(
     document.querySelector('#react-root') as Element
   );

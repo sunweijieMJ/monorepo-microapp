@@ -13,8 +13,9 @@ declare global {
 let router = null;
 let instance: any = null;
 // eslint-disable-next-line no-underscore-dangle
-const isInQiankun = window.__POWERED_BY_QIANKUN__;
+const POWERED_BY_QIANKUN = window.__POWERED_BY_QIANKUN__;
 
+// render
 function render() {
   router = createRouter({
     history: createWebHistory('micro-vue'),
@@ -29,13 +30,10 @@ export async function bootstrap() {
 }
 
 export async function mount() {
-  console.log('mount');
   render();
 }
 
 export async function unmount() {
-  console.log('unmount');
-
   instance.$destroy();
   instance.$el.innerHTML = '';
   instance = null;
@@ -43,4 +41,4 @@ export async function unmount() {
 }
 
 // 单独开发环境
-if (!isInQiankun) mount();
+if (!POWERED_BY_QIANKUN) mount();

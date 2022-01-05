@@ -1,7 +1,6 @@
 <template>
   <div class="homepage">HomePage</div>
 </template>
-
 <script lang="ts">
 import { defineComponent } from 'vue';
 

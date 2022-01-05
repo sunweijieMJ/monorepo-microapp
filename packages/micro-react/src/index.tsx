@@ -10,7 +10,7 @@ declare global {
   }
 }
 
-const isInQiankun = window.__POWERED_BY_QIANKUN__;
+const POWERED_BY_QIANKUN = window.__POWERED_BY_QIANKUN__;
 
 function render() {
   ReactDOM.render(
@@ -39,4 +39,4 @@ export async function unmount() {
 }
 
 // 单独开发环境
-if (!isInQiankun) mount();
+if (!POWERED_BY_QIANKUN) mount();

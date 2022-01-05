@@ -10,9 +10,8 @@ module.exports = defineConfig({
     globals: {
         process: true
     },
-    parser: "vue-eslint-parser",
+    parser: "@typescript-eslint/parser",
     parserOptions: {
-        parser: '@typescript-eslint/parser',
         sourceType: 'module',
         ecmaFeatures: {
             jsx: true,
@@ -22,7 +21,6 @@ module.exports = defineConfig({
     extends: [
         'airbnb-base',
         'plugin:@typescript-eslint/recommended',
-        'plugin:vue/vue3-recommended',
         'plugin:prettier/recommended',
     ],
     plugins: [
@@ -30,12 +28,33 @@ module.exports = defineConfig({
       'prettier',
       'import',
       'html',
-      'vue',
-      'svelte3'
     ],
     overrides: [
       {
-        files: ['**/*.ts', '**/*.tsx', '**/*.vue', '**/*.svelte'],
+        files: ['*.vue'],
+        parser: "vue-eslint-parser",
+        extends: [
+          'airbnb-base',
+          'plugin:@typescript-eslint/recommended',
+          'plugin:vue/vue3-recommended',
+          'plugin:prettier/recommended',
+        ],
+        plugins: [
+          'vue'
+        ]
+      },
+      {
+        files: ['*.svelte'],
+        processor: 'svelte3/svelte3',
+        plugins: [
+          'svelte3'
+        ],
+        rules: {
+          'prettier/prettier': 'off' // 关闭prettier
+        }
+      },
+      {
+        files: ['*.js', '*.jsx', '*.ts', '*.tsx', '*.vue', '*.svelte'],
         rules: {
           'import/extensions': [
             'error',
@@ -49,17 +68,18 @@ module.exports = defineConfig({
           ] // 忽略文件后缀
         },
       },
-      {
-        files: ['*.svelte'],
-        processor: 'svelte3/svelte3',
-      }
     ],
     settings: {
       'import/resolver': {
         alias: {
-          extensions: ['.js', '.jsx', '.ts', '.tsx', '.svelte']
+          extensions: ['.js', '.jsx', '.ts', '.tsx', '.vue', '.svelte']
         }
       },
+      'react': {
+        'version': 'detect' // 针对react项目开启
+      },
+      // eslint-disable-next-line global-require
+      'svelte3/typescript': () => require('typescript'),
       'svelte3/ignore-styles': () => true // 针对svelte文件忽略style标签的检测
     },
     rules: {
@@ -80,6 +100,5 @@ module.exports = defineConfig({
       'consistent-return': 'off', // 要求return语句一致返回
       'no-restricted-syntax': ['error', 'LabeledStatement', 'WithStatement'], // 禁止指定的语法
       '@typescript-eslint/no-non-null-assertion': 'off', // 禁止非空断言
-      'import/no-unresolved': ['error', { ignore: ['.css$'] }] // 忽略.css后缀名检查
     }
 });

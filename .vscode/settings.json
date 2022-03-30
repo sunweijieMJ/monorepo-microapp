@@ -2,17 +2,18 @@
   "typescript.tsdk": "node_modules/typescript/lib",
   "npm.packageManager": "pnpm",
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": false,
+    "source.fixAll.eslint": true,
     "source.fixAll.stylelint": true
   },
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "files.associations": {
-    "*.svelte": "html"
-  },
   "[svelte]": {
     "editor.defaultFormatter": "svelte.svelte-vscode"
   },
+  "[scss]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "svelte.enable-ts-plugin": true,
   "eslint.probe": [
     "javascript",
     "javascriptreact",

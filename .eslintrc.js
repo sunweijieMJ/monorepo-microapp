@@ -72,6 +72,9 @@ module.exports = defineConfig({
     settings: {
       'import/resolver': {
         alias: {
+          map: [
+            ['@', './packages/main-svelte/src'],
+          ],
           extensions: ['.js', '.jsx', '.ts', '.tsx', '.vue', '.svelte']
         }
       },
@@ -93,6 +96,7 @@ module.exports = defineConfig({
       'no-shadow': 'off', // 禁止变量声明覆盖外层作用域的变量
       'no-param-reassign': 'off', // 禁止对函数参数再赋值
       'no-plusplus': 'off', // 禁止使用一元表达式
+      'no-bitwise': 'off', // 禁止使用位运算符
       'func-names': 'off', // 要求或禁止使用命名的function表达式
       'import/prefer-default-export': 'off', // 需要有默认导出
       'prefer-destructuring': ['error', {'array': false, 'object': false}], // 优先使用数组和对象解构(不强制)

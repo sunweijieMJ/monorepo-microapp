@@ -1,0 +1,24 @@
+{
+  "MainAbstract": {
+    "t0": "请求失败",
+    "t1": "登录超时，请重新登录"
+  },
+  "MainIntercept": {
+    "t2": "操作太频繁，请稍后再试",
+    "t3": "加载中"
+  },
+  "Main404": {
+    "t1": "Sorry~",
+    "t2": "The page is having a rest",
+    "t3": "返回首页"
+  },
+  "MainLogin": {
+    "t1": "Sign In",
+    "t2": "\\ User Name",
+    "t3": "\\ Password",
+    "t4": "\\ Security Code",
+    "t5": "Next automatic login",
+    "t110": "密码至少6位",
+    "t111": "登录成功"
+  }
+}

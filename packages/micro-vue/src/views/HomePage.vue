@@ -8,3 +8,10 @@ export default defineComponent({
   name: 'HomePage',
 });
 </script>
+<style lang="scss" scoped>
+.homepage {
+  width: 100px;
+  text-align: center;
+  height: 200px;
+}
+</style>

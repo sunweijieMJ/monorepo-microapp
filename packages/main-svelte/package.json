@@ -19,7 +19,11 @@
     "vite": "^2.7.2"
   },
   "dependencies": {
+    "axios": "^0.24.0",
+    "i18next": "^21.6.5",
+    "js-md5": "^0.7.3",
     "qiankun": "^2.6.3",
+    "rxjs": "^7.5.1",
     "svelte-routing": "^1.6.0"
   }
 }

@@ -1,11 +1,11 @@
 <div class="layout">
-  <header class="layout-header">header</header>
-  <aside class="layout-aside">aside</aside>
-  <nav class="layout-nav">nav</nav>
-  <div id="micro-app"></div>
+  <LayoutHeader class="layout-header"></LayoutHeader>
+  <LayoutAside class="layout-aside"></LayoutAside>
+  <LayoutNav class="layout-nav"></LayoutNav>
+  <!-- 子应用容器 -->
+  <section id="micro-app"></section>
 </div>
 <script lang="ts">
-  import { onMount } from 'svelte';
   // 导入乾坤函数
   import {
     registerMicroApps, // 注册子应用方法
@@ -15,70 +15,35 @@
     runAfterFirstMounted, // 第一个微应用 mount
     addGlobalUncaughtErrorHandler, // 添加全局未捕获异常处理器
   } from 'qiankun';
+  import { onMount } from 'svelte';
+  import LayoutHeader from './LayoutHeader.svelte';
+  import LayoutAside from './LayoutAside.svelte';
+  import LayoutNav from './LayoutNav.svelte';
+  import { basicApi } from '@/api';
 
-  interface MicroApp {
-    name: 'common' | 'rights';
-    activeRule: string | string[];
-    container: string;
-    entry: string;
-    props?: any;
-  }
-  interface MenuList {
-    name: string;
-    title: string;
-    routeName: string;
-    routePath: string;
-    children: MenuList[];
-  }
-
-  const microApps: MicroApp[] = [
-    {
-      name: 'micro-vue',
-      activeRule: ['/micro-vue'],
-      container: '#micro-app',
-      entry: 'http://localhost:3001/',
-    },
-    {
-      name: 'micro-react',
-      activeRule: ['/micro-react'],
-      container: '#micro-app',
-      entry: 'http://localhost:3002/',
-    },
-  ];
-  const menuList = [
-    {
-      name: 'micro-vue',
-      title: 'vue',
-      routeName: 'micro-vue',
-      routePath: '/micro-vue',
-      children: [],
-    },
-    {
-      name: 'micro-react',
-      title: 'react',
-      routeName: 'micro-react',
-      routePath: '/micro-react',
-      children: [],
-    },
-  ];
+  import microApps from '@/config/microApps';
+  import menuList from '@/config/menuList';
+  import type { MenuList } from '@/config/menuList';
 
   onMount(() => {
+    basicApi.getGraphicCode().then((res) => {
+      console.log(res);
+    });
     startMicroApp(menuList);
   });
 
-  const startMicroApp = (menu: MenuList[]) => {
-    const menuListInfo = menu;
-    let defaultApp = '';
+  const startMicroApp = (menuList: MenuList[]) => {
+    let defaultApp = menuList[0].routePath;
 
     // 预加载子应用
     prefetchApps(microApps);
     // 注册子应用
     registerMicroApps(microApps);
     // 设置默认子应用
-    if (window.location.pathname.split('/')[1]) {
-      defaultApp = `/${window.location.pathname.split('/')[1]}`;
+    const activeApp = window.location.pathname.split('/')[1];
+    if (activeApp) {
+      defaultApp = `/${activeApp}`;
     }
-    if (!defaultApp) defaultApp = menuListInfo[1].routePath;
     setDefaultMountApp(defaultApp);
     // 启动微服务
     start({
@@ -92,7 +57,7 @@
     addGlobalUncaughtErrorHandler((event) => console.log(event));
   };
 </script>
-<style lang="scss">
+<style lang="scss" global>
   .layout {
     display: grid;
     grid-template:

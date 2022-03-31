@@ -11,7 +11,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 .homepage {
   width: 100px;
-  text-align: center;
   height: 200px;
+  text-align: center;
 }
 </style>

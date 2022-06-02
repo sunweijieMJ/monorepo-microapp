@@ -1,6 +1,33 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { defineConfig } = require('eslint-define-config');
 
+const rules = {
+  'no-console': process.env.NODE_ENV === 'production' ? ['error', { allow: ['warn', 'error'] }] : 'off', // 禁用 console
+  'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off', // 禁用 debugger
+  'import/no-extraneous-dependencies': 'off', // 引入path报错
+  '@typescript-eslint/no-explicit-any': 'off', // any警告
+
+  'no-use-before-define': 'off', // 禁止定义前使用
+  '@typescript-eslint/no-use-before-define': ['off'], // 禁止定义前使用
+  'no-shadow': 'off', // 禁止变量声明覆盖外层作用域的变量
+  'no-param-reassign': 'off', // 禁止对函数参数再赋值
+  'no-plusplus': 'off', // 禁止使用一元表达式
+  'no-bitwise': 'off', // 禁止使用位运算符
+  'func-names': 'off', // 要求或禁止使用命名的function表达式
+  'import/prefer-default-export': 'off', // 需要有默认导出
+  'class-methods-use-this': 'off', // 强制类方法使用this
+  'prefer-destructuring': ['error', {'array': false, 'object': false}], // 优先使用数组和对象解构(不强制)
+  'no-else-return': ['error',{allowElseIf: true}], // 禁止在else之前返回
+  'consistent-return': 'off', // 要求return语句一致返回
+  'no-restricted-syntax': ['error', 'LabeledStatement', 'WithStatement'], // 禁止指定的语法
+  '@typescript-eslint/no-non-null-assertion': 'off', // 禁止非空断言
+  // 'import/no-unresolved': ['error', { ignore: ['.css$'] }], // 忽略.css后缀名检查
+  'lines-between-class-members': ["error", "always", {exceptAfterSingleLine: true}], // 要求或禁止类成员之间有空行
+  'no-nested-ternary': 'off', // 不允许嵌套的三元表达式
+  'no-continue': 'off', // 不允许continue
+  'no-control-regex': ['off'], // 禁止在正则表达式中使用控制字符
+}
+
 module.exports = defineConfig({
     root: true,
     env: {
@@ -33,6 +60,14 @@ module.exports = defineConfig({
       {
         files: ['*.vue'],
         parser: "vue-eslint-parser",
+        parserOptions: {
+            parser: '@typescript-eslint/parser',
+            sourceType: 'module',
+            ecmaFeatures: {
+                jsx: true,
+                tsx: true,
+            }
+        },
         extends: [
           'airbnb-base',
           'plugin:@typescript-eslint/recommended',
@@ -41,20 +76,11 @@ module.exports = defineConfig({
         ],
         plugins: [
           'vue'
-        ]
-      },
-      {
-        files: ['*.svelte'],
-        processor: 'svelte3/svelte3',
-        plugins: [
-          'svelte3'
         ],
-        rules: {
-          'prettier/prettier': 'off' // 关闭prettier
-        }
+        rules
       },
       {
-        files: ['*.js', '*.jsx', '*.ts', '*.tsx', '*.vue', '*.svelte'],
+        files: ['*.js', '*.jsx', '*.ts', '*.tsx', '*.vue'],
         rules: {
           'import/extensions': [
             'error',
@@ -73,36 +99,14 @@ module.exports = defineConfig({
       'import/resolver': {
         alias: {
           map: [
-            ['@', './packages/main-svelte/src'],
+            ['@', './packages/main-vue/src'],
           ],
-          extensions: ['.js', '.jsx', '.ts', '.tsx', '.vue', '.svelte']
+          extensions: ['.js', '.jsx', '.ts', '.tsx', '.vue']
         }
       },
       'react': {
         'version': 'detect' // 针对react项目开启
       },
-      // eslint-disable-next-line global-require
-      'svelte3/typescript': () => require('typescript'),
-      'svelte3/ignore-styles': () => true // 针对svelte文件忽略style标签的检测
     },
-    rules: {
-      'no-console': process.env.NODE_ENV === 'production' ? ['error', { allow: ['warn', 'error'] }] : 'off', // 禁用 console
-      'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off', // 禁用 debugger
-      'import/no-extraneous-dependencies': 'off', // 引入path报错
-      '@typescript-eslint/no-explicit-any': 'off', // any警告
-
-      'no-use-before-define': 'off', // 禁止定义前使用
-      '@typescript-eslint/no-use-before-define': ['off'], // 禁止定义前使用
-      'no-shadow': 'off', // 禁止变量声明覆盖外层作用域的变量
-      'no-param-reassign': 'off', // 禁止对函数参数再赋值
-      'no-plusplus': 'off', // 禁止使用一元表达式
-      'no-bitwise': 'off', // 禁止使用位运算符
-      'func-names': 'off', // 要求或禁止使用命名的function表达式
-      'import/prefer-default-export': 'off', // 需要有默认导出
-      'prefer-destructuring': ['error', {'array': false, 'object': false}], // 优先使用数组和对象解构(不强制)
-      'no-else-return': ['error',{allowElseIf: true}], // 禁止在else之前返回
-      'consistent-return': 'off', // 要求return语句一致返回
-      'no-restricted-syntax': ['error', 'LabeledStatement', 'WithStatement'], // 禁止指定的语法
-      '@typescript-eslint/no-non-null-assertion': 'off', // 禁止非空断言
-    }
+    rules
 });

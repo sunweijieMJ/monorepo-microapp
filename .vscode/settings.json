@@ -1,19 +1,16 @@
 {
   "typescript.tsdk": "node_modules/typescript/lib",
   "npm.packageManager": "pnpm",
+  "editor.tabSize": 2,
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true,
     "source.fixAll.stylelint": true
   },
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "[svelte]": {
-    "editor.defaultFormatter": "svelte.svelte-vscode"
-  },
   "[scss]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "svelte.enable-ts-plugin": true,
   "eslint.probe": [
     "javascript",
     "javascriptreact",
@@ -21,7 +18,6 @@
     "typescriptreact",
     "html",
     "vue",
-    "svelte",
     "markdown"
   ],
   "eslint.validate": [
@@ -31,22 +27,14 @@
     "typescriptreact",
     "html",
     "vue",
-    "svelte",
     "markdown"
   ],
-  "stylelint.validate": [
-    "css",
-    "postcss",
-    "less",
-    "scss",
-    "sass",
-    "vue",
-    "svelte"
-  ],
-  "i18n-ally.localesPaths": "packages/locale/lang",
-  "i18n-ally.sourceLanguage": "zh-cn",
-  "i18n-ally.displayLanguage": "zh-cn",
-  "i18n-ally.enabledParsers": ["ts"],
+  "stylelint.validate": ["css", "postcss", "less", "scss", "sass", "vue"],
+  // "i18n-ally.localesPaths": "packages/main-vue/src/locale",
+  "i18n-ally.sourceLanguage": "zh-CN",
+  "i18n-ally.displayLanguage": "zh-CN",
+  "i18n-ally.enabledParsers": ["json"],
   "i18n-ally.enabledFrameworks": ["vue", "vue-sfc"],
-  "i18n-ally.keystyle": "nested"
+  "i18n-ally.keystyle": "nested",
+  "i18n-ally.localesPaths": ["packages/main-vue/src/locale"]
 }

@@ -10,3 +10,5 @@ declare module 'lodash';
 declare module 'js-md5';
 
 declare module 'nprogress';
+
+declare module 'vuex-persistedstate';

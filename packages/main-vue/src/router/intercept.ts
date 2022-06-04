@@ -1,6 +1,7 @@
 import NProgress from 'nprogress';
 import router from './index';
 import storage from '@/utils/storage';
+import store from '@/store';
 
 NProgress.configure({ showSpinner: false });
 // 白名单
@@ -13,9 +14,10 @@ router.beforeEach(async (to, from, next) => {
   const token =
     storage('sessionstorage').get('token') ||
     storage('localstorage').get('token');
-
   // 判断是否登录
-  if (token) {
+  if (store.state.basic.shareRouterWhiteList.includes(to.path)) {
+    next();
+  } else if (token) {
     if (whiteList.includes(to.path)) {
       next({ name: 'Layout' });
       NProgress.done();

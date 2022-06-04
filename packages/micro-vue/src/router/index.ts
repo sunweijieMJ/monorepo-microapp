@@ -10,6 +10,9 @@ const routes: RouteRecordRaw[] = [
     path: '/HomePage',
     name: 'HomePage',
     component: HomePage,
+    meta: {
+      title: 'HomePage',
+    },
   },
 ];
 

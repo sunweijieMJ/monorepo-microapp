@@ -20,6 +20,7 @@ import {
 import { defineComponent, onMounted } from 'vue';
 
 import { basicApi } from '@/api';
+import pager from '@/utils/pager';
 import microApps from '@/config/microApps';
 import menuList from '@/config/menuList';
 import type { MenuList } from '@/config/menuList';
@@ -40,6 +41,7 @@ export default defineComponent({
       basicApi.getGraphicCode().then((res) => {
         console.log(res);
       });
+      console.log('pager', pager);
       startMicroApp(menuList);
     });
 

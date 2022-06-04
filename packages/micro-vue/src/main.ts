@@ -1,5 +1,6 @@
 import { createApp } from 'vue';
 import { createRouter, createWebHistory } from 'vue-router';
+import type { RouteLocation } from 'vue-router';
 import App from './App.vue';
 import routes from './router';
 
@@ -10,7 +11,7 @@ declare global {
   }
 }
 
-let router = null;
+let router: any = null;
 let instance: any = null;
 // eslint-disable-next-line no-underscore-dangle
 const POWERED_BY_QIANKUN = window.__POWERED_BY_QIANKUN__;
@@ -29,8 +30,14 @@ export async function bootstrap() {
   console.log('bootstrap');
 }
 
-export async function mount() {
+export async function mount(props?: any) {
   render();
+  if (props.setGlobalState && router) {
+    // 通知父应用路由改变
+    router.afterEach((to: RouteLocation) => {
+      props.setGlobalState({ title: to.meta.title });
+    });
+  }
 }
 
 export async function unmount() {

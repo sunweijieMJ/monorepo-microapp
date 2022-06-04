@@ -25,8 +25,12 @@ export async function bootstrap() {
   console.log('bootstrap');
 }
 
-export async function mount() {
+export async function mount(props?: any) {
   render();
+  if (props.setGlobalState) {
+    // 通知父应用路由改变
+    // props.setGlobalState({ title: '' });
+  }
 }
 
 export async function unmount() {

@@ -91,7 +91,6 @@ instance.interceptors.response.use(
 
     const response = error.response;
     // 根据返回的code值来做不同的处理(和后端约定)
-    console.log(response?.status);
     switch (response?.status) {
       case 401:
         // token失效

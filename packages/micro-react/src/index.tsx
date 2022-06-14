@@ -22,18 +22,21 @@ function render() {
 }
 
 export async function bootstrap() {
-  console.log('bootstrap');
+  console.log('react bootstrap');
 }
 
-export async function mount(props?: any) {
+export async function mount() {
+  console.log('react mount');
   render();
-  if (props.setGlobalState) {
-    // 通知父应用路由改变
-    // props.setGlobalState({ title: '' });
-  }
+}
+
+export async function update() {
+  console.log('react update');
+  render();
 }
 
 export async function unmount() {
+  console.log('react unmount');
   ReactDOM.unmountComponentAtNode(
     document.querySelector('#react-root') as Element
   );

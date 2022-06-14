@@ -1,6 +1,5 @@
 import { createApp } from 'vue';
 import { createRouter, createWebHistory } from 'vue-router';
-import type { RouteLocation } from 'vue-router';
 import App from './App.vue';
 import routes from './router';
 
@@ -27,20 +26,21 @@ function render() {
 }
 
 export async function bootstrap() {
-  console.log('bootstrap');
+  console.log('vue bootstrap');
 }
 
-export async function mount(props?: any) {
+export async function mount() {
+  console.log('vue mount');
   render();
-  if (props.setGlobalState && router) {
-    // 通知父应用路由改变
-    router.afterEach((to: RouteLocation) => {
-      props.setGlobalState({ title: to.meta.title });
-    });
-  }
+}
+
+export async function update() {
+  console.log('vue update');
+  render();
 }
 
 export async function unmount() {
+  console.log('vue unmount');
   instance.$destroy();
   instance.$el.innerHTML = '';
   instance = null;

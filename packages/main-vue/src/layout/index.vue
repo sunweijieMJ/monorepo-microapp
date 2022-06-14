@@ -10,6 +10,7 @@
 <script lang="ts">
 // 导入乾坤函数
 import {
+  loadMicroApp, // 手动加载一个微应用
   registerMicroApps, // 注册子应用方法
   setDefaultMountApp, // 设默认启用的子应用
   prefetchApps, // 预加载子应用
@@ -19,8 +20,6 @@ import {
 } from 'qiankun';
 import { defineComponent, onMounted } from 'vue';
 
-import { basicApi } from '@/api';
-import pager from '@/utils/pager';
 import microApps from '@/config/microApps';
 import menuList from '@/config/menuList';
 import type { MenuList } from '@/config/menuList';
@@ -38,34 +37,46 @@ export default defineComponent({
   },
   setup() {
     onMounted(() => {
-      basicApi.getGraphicCode().then((res) => {
-        console.log(res);
-      });
-      console.log('pager', pager);
-      startMicroApp(menuList);
+      autoLoadMicroApps(menuList);
+      // manualLoadMicroApps();
     });
 
-    const startMicroApp = (menuList: MenuList[]) => {
+    // 手动加载子应用
+    const manualLoadMicroApps = () => {
+      microApps.forEach((item) => {
+        loadMicroApp({
+          name: item.name,
+          entry: item.entry,
+          container: item.container,
+        });
+      });
+    };
+
+    // 自动加载子应用
+    const autoLoadMicroApps = (menuList: MenuList[]) => {
       let defaultApp = menuList[0].routePath;
 
       // 预加载子应用
       prefetchApps(microApps);
+
       // 注册子应用
       registerMicroApps(microApps);
+
       // 设置默认子应用
       const activeApp = window.location.pathname.split('/')[1];
       if (activeApp) {
         defaultApp = `/${activeApp}`;
       }
       setDefaultMountApp(defaultApp);
+
       // 启动微服务
       start({
         prefetch: true,
       });
+
       // 第一个微应用 mount 后需要调用的方法
-      runAfterFirstMounted(() => {
-        console.log('runAfterFirstMounted');
-      });
+      runAfterFirstMounted(() => console.log('runAfterFirstMounted'));
+
       // 设置全局未捕获异常处理器
       addGlobalUncaughtErrorHandler((event) => console.log(event));
     };

@@ -10,13 +10,13 @@ export const microApps: MicroApp[] = [
   {
     name: 'micro-vue',
     activeRule: ['/micro-vue'],
-    container: '#micro-app',
+    container: '#micro-vue',
     entry: 'http://localhost:3001/',
   },
   {
     name: 'micro-react',
     activeRule: ['/micro-react'],
-    container: '#micro-app',
+    container: '#micro-react',
     entry: 'http://localhost:3002/',
   },
 ];

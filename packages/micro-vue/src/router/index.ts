@@ -4,10 +4,6 @@ import HomePage2 from '../views/HomePage2.vue';
 
 const routes: RouteRecordRaw[] = [
   {
-    path: '/',
-    redirect: '/HomePage1',
-  },
-  {
     path: '/HomePage1',
     name: 'HomePage1',
     component: HomePage1,

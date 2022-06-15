@@ -25,6 +25,7 @@ export default defineComponent({
     let activeIndex = window.location.pathname;
     const handleSelect = (path: string) => {
       activeIndex = path;
+
       window.location.href = path;
     };
 

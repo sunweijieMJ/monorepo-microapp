@@ -1,4 +1,4 @@
-import { BrowserRouter, Navigate, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import HomePage1 from '../pages/HomePage1';
 import HomePage2 from '../pages/HomePage2';
 
@@ -9,7 +9,7 @@ function Router() {
         <Route path="/HomePage1" element={<HomePage1 />} />
         <Route path="/HomePage2" element={<HomePage2 />} />
         {/* redirect */}
-        <Route path="*" element={<Navigate to="/HomePage1" />} />
+        <Route path="*" element={null} />
       </Routes>
     </BrowserRouter>
   );

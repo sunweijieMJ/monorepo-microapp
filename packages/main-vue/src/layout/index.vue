@@ -4,7 +4,8 @@
     <LayoutAside class="layout-aside"></LayoutAside>
     <LayoutNav class="layout-nav"></LayoutNav>
     <!-- 子应用容器 -->
-    <section id="micro-app"></section>
+    <section id="micro-vue" class="micro-app"></section>
+    <section id="micro-react" class="micro-app"></section>
   </div>
 </template>
 <script lang="ts">
@@ -18,7 +19,7 @@ import {
   runAfterFirstMounted, // 第一个微应用 mount
   addGlobalUncaughtErrorHandler, // 添加全局未捕获异常处理器
 } from 'qiankun';
-import { defineComponent, onMounted } from 'vue';
+import { defineComponent, onMounted, ref } from 'vue';
 
 import microApps from '@/config/microApps';
 import menuList from '@/config/menuList';
@@ -36,20 +37,32 @@ export default defineComponent({
     LayoutNav,
   },
   setup() {
+    // loadMicroApp的实例对象
+    const contentApp: any = ref(null);
+
     onMounted(() => {
-      autoLoadMicroApps(menuList);
-      // manualLoadMicroApps();
+      // autoLoadMicroApps(menuList);
+      manualLoadMicroApps(window.location.pathname.split('/')[1]);
     });
 
     // 手动加载子应用
-    const manualLoadMicroApps = () => {
-      microApps.forEach((item) => {
-        loadMicroApp({
-          name: item.name,
-          entry: item.entry,
-          container: item.container,
-        });
-      });
+    const manualLoadMicroApps = (name: string) => {
+      const microApp = microApps.find((item) => item.name === name);
+
+      if (microApp) {
+        // 切换微应用时，先卸载前一个微应用
+        if (contentApp?.value?.getStatus() === 'MOUNTED') {
+          // 卸载前一个应用
+          contentApp.value.unmount();
+          // 卸载完前一个应用后紧接着加载新的应用，这里用qiankun的loadMicroApp来加载微应用，返回一个实例，可以通过实例上的unmount方法卸载自身。
+          contentApp.value = loadMicroApp(microApp);
+
+          return;
+        }
+
+        // 如果微应用是初次加载，那么不用先卸载之前挂载的应用直接加载
+        contentApp.value = loadMicroApp(microApp);
+      }
     };
 
     // 自动加载子应用
@@ -110,7 +123,7 @@ export default defineComponent({
   }
 
   .micro-app {
-    grid-area: main;
+    // grid-area: main;
     overflow-y: auto;
     transition: width 0.3s;
     background-color: #f6f7fb;

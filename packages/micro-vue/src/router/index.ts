@@ -4,7 +4,7 @@ import HomePage2 from '../views/HomePage2.vue';
 
 const routes: RouteRecordRaw[] = [
   {
-    path: '/HomePage1',
+    path: '/micro-vue/HomePage1',
     name: 'HomePage1',
     component: HomePage1,
     meta: {
@@ -12,11 +12,19 @@ const routes: RouteRecordRaw[] = [
     },
   },
   {
-    path: '/HomePage2',
+    path: '/micro-vue/HomePage2',
     name: 'HomePage2',
     component: HomePage2,
     meta: {
       title: 'HomePage2',
+    },
+  },
+  {
+    path: '/:catchAll(.*)',
+    name: 'App',
+    component: () => import('../App.vue'),
+    meta: {
+      title: 'App',
     },
   },
 ];

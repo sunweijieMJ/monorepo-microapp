@@ -4,8 +4,16 @@
     <LayoutAside class="layout-aside"></LayoutAside>
     <LayoutNav class="layout-nav"></LayoutNav>
     <!-- 子应用容器 -->
-    <section id="micro-vue" class="micro-app"></section>
-    <section id="micro-react" class="micro-app"></section>
+    <section
+      id="micro-vue"
+      class="micro-app"
+      :class="{ activeApp: activeName === 'micro-vue' }"
+    ></section>
+    <section
+      id="micro-react"
+      class="micro-app"
+      :class="{ activeApp: activeName === 'micro-react' }"
+    ></section>
   </div>
 </template>
 <script lang="ts">
@@ -40,10 +48,12 @@ export default defineComponent({
   setup() {
     // loadMicroApp的实例对象
     const activeApp = ref<MicroApp | null>(null);
+    const activeName = ref(window.location.pathname.split('/')[1]);
 
     onMounted(() => {
       // autoLoadMicroApps(menuList);
-      manualLoadMicroApps(window.location.pathname.split('/')[1]);
+      // manualLoadMicroApps(window.location.pathname.split('/')[1]);
+      microApps.forEach((item) => loadMicroApp(item));
     });
 
     // 手动加载子应用
@@ -51,6 +61,7 @@ export default defineComponent({
       const microApp = microApps.find((item) => item.name === name);
 
       if (microApp) {
+        activeName.value = name;
         // 切换微应用时，先卸载前一个微应用
         if (activeApp?.value?.getStatus() === 'MOUNTED') {
           // 卸载前一个应用
@@ -94,6 +105,10 @@ export default defineComponent({
       // 设置全局未捕获异常处理器
       addGlobalUncaughtErrorHandler((event) => console.log(event));
     };
+
+    return {
+      activeName,
+    };
   },
 });
 </script>
@@ -124,12 +139,16 @@ export default defineComponent({
   }
 
   .micro-app {
-    // grid-area: main;
+    grid-area: main;
     overflow-y: auto;
     transition: width 0.3s;
     background-color: #f6f7fb;
     scroll-behavior: smooth;
     will-change: width;
+
+    &.activeApp {
+      z-index: 9999;
+    }
   }
 }
 </style>

@@ -4,10 +4,10 @@ import HomePage2 from '../pages/HomePage2';
 
 function Router() {
   return (
-    <BrowserRouter basename="micro-react">
+    <BrowserRouter basename="/">
       <Routes>
-        <Route path="/HomePage1" element={<HomePage1 />} />
-        <Route path="/HomePage2" element={<HomePage2 />} />
+        <Route path="/micro-react/HomePage1" element={<HomePage1 />} />
+        <Route path="/micro-react/HomePage2" element={<HomePage2 />} />
         {/* redirect */}
         <Route path="*" element={null} />
       </Routes>

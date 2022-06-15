@@ -18,7 +18,7 @@ const POWERED_BY_QIANKUN = window.__POWERED_BY_QIANKUN__;
 // render
 function render() {
   router = createRouter({
-    history: createWebHistory('micro-vue'),
+    history: createWebHistory('/'),
     routes,
   });
 

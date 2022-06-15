@@ -19,6 +19,7 @@ import {
   runAfterFirstMounted, // 第一个微应用 mount
   addGlobalUncaughtErrorHandler, // 添加全局未捕获异常处理器
 } from 'qiankun';
+import type { MicroApp } from 'qiankun';
 import { defineComponent, onMounted, ref } from 'vue';
 
 import microApps from '@/config/microApps';
@@ -38,7 +39,7 @@ export default defineComponent({
   },
   setup() {
     // loadMicroApp的实例对象
-    const contentApp: any = ref(null);
+    const activeApp = ref<MicroApp | null>(null);
 
     onMounted(() => {
       // autoLoadMicroApps(menuList);
@@ -51,23 +52,23 @@ export default defineComponent({
 
       if (microApp) {
         // 切换微应用时，先卸载前一个微应用
-        if (contentApp?.value?.getStatus() === 'MOUNTED') {
+        if (activeApp?.value?.getStatus() === 'MOUNTED') {
           // 卸载前一个应用
-          contentApp.value.unmount();
+          activeApp.value.unmount();
           // 卸载完前一个应用后紧接着加载新的应用，这里用qiankun的loadMicroApp来加载微应用，返回一个实例，可以通过实例上的unmount方法卸载自身。
-          contentApp.value = loadMicroApp(microApp);
+          activeApp.value = loadMicroApp(microApp);
 
           return;
         }
 
         // 如果微应用是初次加载，那么不用先卸载之前挂载的应用直接加载
-        contentApp.value = loadMicroApp(microApp);
+        activeApp.value = loadMicroApp(microApp);
       }
     };
 
     // 自动加载子应用
     const autoLoadMicroApps = (menuList: MenuList[]) => {
-      let defaultApp = menuList[0].routePath;
+      let defaultPath = menuList[0].routePath;
 
       // 预加载子应用
       prefetchApps(microApps);
@@ -76,11 +77,11 @@ export default defineComponent({
       registerMicroApps(microApps);
 
       // 设置默认子应用
-      const activeApp = window.location.pathname.split('/')[1];
-      if (activeApp) {
-        defaultApp = `/${activeApp}`;
+      const activePath = window.location.pathname.split('/')[1];
+      if (activePath) {
+        defaultPath = `/${activePath}`;
       }
-      setDefaultMountApp(defaultApp);
+      setDefaultMountApp(defaultPath);
 
       // 启动微服务
       start({

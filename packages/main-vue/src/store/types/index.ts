@@ -1,9 +1,9 @@
 import { RouteLocation } from 'vue-router';
 
-export interface PopupType {
+export interface PopupType<T = any> {
   status: boolean;
   type: string;
-  data: any;
+  data: T;
 }
 
 export interface MenuList {

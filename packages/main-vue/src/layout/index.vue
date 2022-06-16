@@ -4,16 +4,12 @@
     <LayoutAside class="layout-aside"></LayoutAside>
     <LayoutNav class="layout-nav"></LayoutNav>
     <!-- 子应用容器 -->
-    <section
-      id="micro-vue"
-      class="micro-app"
-      :class="{ activeApp: activeName === 'micro-vue' }"
-    ></section>
-    <section
-      id="micro-react"
-      class="micro-app"
-      :class="{ activeApp: activeName === 'micro-react' }"
-    ></section>
+    <div
+      v-for="(item, index) in microAppList"
+      :id="item.name"
+      :key="index"
+      :class="['micro-app', { 'active-app': activeName === item.name }]"
+    ></div>
   </div>
 </template>
 <script lang="ts">
@@ -49,16 +45,17 @@ export default defineComponent({
     // loadMicroApp的实例对象
     const activeApp = ref<MicroApp | null>(null);
     const activeName = ref(window.location.pathname.split('/')[1]);
+    const microAppList = microApps;
 
     onMounted(() => {
       // autoLoadMicroApps(menuList);
-      // manualLoadMicroApps(window.location.pathname.split('/')[1]);
-      microApps.forEach((item) => loadMicroApp(item));
+      manualLoadMicroApps(window.location.pathname.split('/')[1]);
+      // microAppList.forEach((item) => loadMicroApp(item));
     });
 
     // 手动加载子应用
     const manualLoadMicroApps = (name: string) => {
-      const microApp = microApps.find((item) => item.name === name);
+      const microApp = microAppList.find((item) => item.name === name);
 
       if (microApp) {
         activeName.value = name;
@@ -82,10 +79,10 @@ export default defineComponent({
       let defaultPath = menuList[0].routePath;
 
       // 预加载子应用
-      prefetchApps(microApps);
+      prefetchApps(microAppList);
 
       // 注册子应用
-      registerMicroApps(microApps);
+      registerMicroApps(microAppList);
 
       // 设置默认子应用
       const activePath = window.location.pathname.split('/')[1];
@@ -108,6 +105,7 @@ export default defineComponent({
 
     return {
       activeName,
+      microAppList,
     };
   },
 });
@@ -146,8 +144,8 @@ export default defineComponent({
     scroll-behavior: smooth;
     will-change: width;
 
-    &.activeApp {
-      z-index: 9999;
+    &:not(.active-app) {
+      z-index: -1;
     }
   }
 }

@@ -6,7 +6,7 @@ export type MenuList = {
   children: MenuList[];
 };
 
-const menuList = [
+export const menuList = [
   {
     name: 'micro-vue',
     title: 'vue',

@@ -6,7 +6,7 @@ import './public-path';
 const POWERED_BY_QIANKUN = window.__POWERED_BY_QIANKUN__;
 
 const root = ReactDOM.createRoot(
-  document.querySelector('#micro-react') as HTMLElement
+  document.querySelector('#micro-react-root') as HTMLElement
 );
 
 function render() {

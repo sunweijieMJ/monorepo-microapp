@@ -15,7 +15,7 @@ function render() {
     routes,
   });
 
-  instance = createApp(App).use(router).mount('#micro-vue');
+  instance = createApp(App).use(router).mount('#micro-vue-root');
 }
 
 export async function bootstrap() {

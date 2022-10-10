@@ -1,0 +1,38 @@
+.layout {
+  display: grid;
+  grid-template:
+    'aside header header' 50px
+    'aside nav main'
+    'aside nav main' 1fr / 60px min-content 1fr;
+  min-width: 1260px;
+  height: 100vh;
+
+  .layout-header {
+    grid-area: header;
+    background-color: rgb(155, 104, 212);
+  }
+
+  .layout-aside {
+    grid-area: aside;
+    background-color: rgb(143, 206, 206);
+  }
+
+  .layout-nav {
+    grid-area: nav;
+    min-width: 200px;
+    background-color: rgb(216, 120, 120);
+  }
+
+  .micro-app {
+    grid-area: main;
+    overflow-y: auto;
+    transition: width 0.3s;
+    background-color: #f6f7fb;
+    scroll-behavior: smooth;
+    will-change: width;
+
+    &:not(.active-app) {
+      z-index: -1;
+    }
+  }
+}

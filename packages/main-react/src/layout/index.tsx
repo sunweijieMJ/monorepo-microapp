@@ -8,6 +8,7 @@ import microApps from '../config/microApps';
 import LayoutNav from './LayoutNav';
 import LayoutAside from './LayoutAside';
 import LayoutHeader from './LayoutHeader';
+import './index.scss';
 
 // loadMicroApp的实例对象
 let activeApp: any = null;
@@ -17,6 +18,9 @@ const microAppList = microApps;
 // 手动加载子应用
 const manualLoadMicroApps = (name: string) => {
   const microApp = microAppList.find((item) => item.name === name);
+
+  console.log('log1', microApp);
+  console.log('log2', activeApp);
 
   if (microApp) {
     activeName = name;

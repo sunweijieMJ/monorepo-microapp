@@ -1,23 +1,19 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom/client';
 import Router from './router';
 import './public-path';
 
-declare global {
-  interface Window {
-    __POWERED_BY_QIANKUN__: boolean;
-    __INJECTED_PUBLIC_PATH_BY_QIANKUN__: string;
-  }
-}
-
 const POWERED_BY_QIANKUN = window.__POWERED_BY_QIANKUN__;
 
+const root = ReactDOM.createRoot(
+  document.querySelector('#micro-react') as HTMLElement
+);
+
 function render() {
-  ReactDOM.render(
+  root.render(
     <React.StrictMode>
       <Router />
-    </React.StrictMode>,
-    document.querySelector('#react-root')
+    </React.StrictMode>
   );
 }
 
@@ -37,9 +33,7 @@ export async function update() {
 
 export async function unmount() {
   console.log('react unmount');
-  ReactDOM.unmountComponentAtNode(
-    document.querySelector('#react-root') as Element
-  );
+  root.unmount();
 }
 
 // 单独开发环境

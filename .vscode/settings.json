@@ -30,11 +30,10 @@
     "markdown"
   ],
   "stylelint.validate": ["css", "postcss", "less", "scss", "sass", "vue"],
-  // "i18n-ally.localesPaths": "packages/main-vue/src/locale",
   "i18n-ally.sourceLanguage": "zh-CN",
   "i18n-ally.displayLanguage": "zh-CN",
   "i18n-ally.enabledParsers": ["json"],
   "i18n-ally.enabledFrameworks": ["vue", "vue-sfc"],
   "i18n-ally.keystyle": "nested",
-  "i18n-ally.localesPaths": ["packages/main-vue/src/locale"]
+  "i18n-ally.localesPaths": ["packages/main-react/src/locale"]
 }

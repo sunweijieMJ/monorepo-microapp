@@ -29,7 +29,7 @@ export default defineComponent({
 
 html,
 body,
-#container {
+#main-vue {
   min-width: 1260px;
   min-height: 100vh;
   background-color: #fff;

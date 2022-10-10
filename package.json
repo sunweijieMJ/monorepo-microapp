@@ -8,7 +8,7 @@
     "node": ">= 16"
   },
   "scripts": {
-    "start": "pnpm -C packages/main-vue serve dev & pnpm -C packages/micro-vue serve & pnpm -C packages/micro-react start",
+    "start": "pnpm -C packages/main-react start & pnpm -C packages/micro-vue serve & pnpm -C packages/micro-react start",
     "cz": "git-cz",
     "format": "prettier --write .",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",

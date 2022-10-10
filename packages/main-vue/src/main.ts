@@ -6,4 +6,4 @@ import { i18n } from './plugin';
 
 const app = createApp(App);
 
-app.use(router).use(store).use(i18n).mount('#container');
+app.use(router).use(store).use(i18n).mount('#main-vue');

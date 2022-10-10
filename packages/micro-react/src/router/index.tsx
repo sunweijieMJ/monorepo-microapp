@@ -8,7 +8,6 @@ function Router() {
       <Routes>
         <Route path="/micro-react/HomePage1" element={<HomePage1 />} />
         <Route path="/micro-react/HomePage2" element={<HomePage2 />} />
-        {/* redirect */}
         <Route path="*" element={null} />
       </Routes>
     </BrowserRouter>

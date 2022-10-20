@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import Router from './router';
 import './public-path';
 
+// eslint-disable-next-line no-underscore-dangle
 const POWERED_BY_QIANKUN = window.__POWERED_BY_QIANKUN__;
 
 const root = ReactDOM.createRoot(

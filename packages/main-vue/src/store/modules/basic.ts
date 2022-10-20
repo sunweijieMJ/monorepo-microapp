@@ -1,17 +1,17 @@
-import { Commit } from 'vuex';
 import { ElNotification } from 'element-plus';
+import { Commit } from 'vuex';
+import {
+  BasicState,
+  DirectoryList,
+  LanguageList,
+  MemberSystemOptionType,
+  MenuList,
+  PopupType,
+  TagView,
+  UserInfoType,
+} from '../types';
 import { basicApi } from '@/api';
 import storage from '@/utils/storage';
-import {
-  PopupType,
-  MenuList,
-  LanguageList,
-  UserInfoType,
-  TagView,
-  BasicState,
-  MemberSystemOptionType,
-  DirectoryList,
-} from '../types';
 
 export default {
   namespaced: true,

@@ -1,11 +1,22 @@
-# Package Manager
-node_modules
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# testing
+/coverage
 
 # Bundle
-dist
+/build
+/dist
+/analyzer
 
 # local env files
 *.local
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
 
 # System directories and files
 .DS_Store

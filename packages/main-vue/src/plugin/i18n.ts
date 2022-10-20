@@ -1,10 +1,9 @@
-import { createI18n } from 'vue-i18n';
 // 语言包
 import enElement from 'element-plus/lib/locale/lang/en';
 import zhElement from 'element-plus/lib/locale/lang/zh-cn';
+import { createI18n } from 'vue-i18n';
 import enLocale from '@/locale/en.json';
 import zhLocale from '@/locale/zh-CN.json';
-
 import storage from '@/utils/storage';
 
 if (!storage('localstorage').get('i18n')) {

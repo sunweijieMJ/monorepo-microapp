@@ -1,7 +1,7 @@
 import NProgress from 'nprogress';
 import router from './index';
-import storage from '@/utils/storage';
 import store from '@/store';
+import storage from '@/utils/storage';
 
 NProgress.configure({ showSpinner: false });
 // 白名单

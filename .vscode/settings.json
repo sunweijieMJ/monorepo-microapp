@@ -8,9 +8,6 @@
   },
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "[scss]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
   "eslint.probe": [
     "javascript",
     "javascriptreact",
@@ -33,7 +30,12 @@
   "i18n-ally.sourceLanguage": "zh-CN",
   "i18n-ally.displayLanguage": "zh-CN",
   "i18n-ally.enabledParsers": ["json"],
-  "i18n-ally.enabledFrameworks": ["vue", "vue-sfc"],
-  "i18n-ally.keystyle": "nested",
-  "i18n-ally.localesPaths": ["packages/main-react/src/locale"]
+  "i18n-ally.enabledFrameworks": ["react", "vue", "vue-sfc"],
+  "i18n-ally.localesPaths": [
+    "packages/main-react/src/locale",
+    "packages/main-vue/src/locale",
+    "packages/micro-react/src/locale",
+    "packages/micro-vue/src/locale"
+  ],
+  "i18n-ally.keystyle": "flat"
 }

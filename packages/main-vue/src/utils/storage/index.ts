@@ -1,10 +1,10 @@
 /**
  * 统一封装对外的storage接口
  */
-import IndexedDBAPI from './indexDB';
 import CookieAPI from './cookie';
-import SessionStorageAPI from './sessionstorage';
+import IndexedDBAPI from './indexDB';
 import LocalStorageAPI from './localstorage';
+import SessionStorageAPI from './sessionstorage';
 
 const UseStoreObj = {
   indexDB: IndexedDBAPI,

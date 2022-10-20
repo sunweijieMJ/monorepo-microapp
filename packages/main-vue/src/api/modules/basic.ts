@@ -5,15 +5,15 @@
  */
 import Abstract from '../abstract';
 import {
-  SystemParamValueList,
-  TranslateMultipleWord,
-  AuthLogin,
-  ModifyPass,
-  TaskList,
-  TaskDetailList,
-  MessageList,
   AssetList,
+  AuthLogin,
   GetDirectoryList,
+  MessageList,
+  ModifyPass,
+  SystemParamValueList,
+  TaskDetailList,
+  TaskList,
+  TranslateMultipleWord,
   UpdateUser,
 } from '../types';
 

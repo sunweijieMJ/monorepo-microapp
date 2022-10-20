@@ -1,11 +1,11 @@
 import axios from 'axios';
-import type { AxiosRequestConfig, Method, Canceler } from 'axios';
+import type { AxiosRequestConfig, Canceler, Method } from 'axios';
 import { i18n } from '@/plugin';
-import storage from '@/utils/storage';
 import {
   showFullScreenLoading,
   tryHideFullScreenLoading,
 } from '@/utils/loading';
+import storage from '@/utils/storage';
 
 // 定义接口
 interface PendingList {

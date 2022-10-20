@@ -15,23 +15,21 @@
 <script lang="ts">
 // 导入乾坤函数
 import {
-  loadMicroApp, // 手动加载一个微应用
-  registerMicroApps, // 注册子应用方法
-  setDefaultMountApp, // 设默认启用的子应用
-  prefetchApps, // 预加载子应用
-  start, // 启动qiankun
-  runAfterFirstMounted, // 第一个微应用 mount
   addGlobalUncaughtErrorHandler, // 添加全局未捕获异常处理器
+  loadMicroApp, // 手动加载一个微应用
+  prefetchApps, // 预加载子应用
+  registerMicroApps, // 注册子应用方法
+  runAfterFirstMounted, // 第一个微应用 mount
+  setDefaultMountApp, // 设默认启用的子应用
+  start,
 } from 'qiankun';
 import type { MicroApp } from 'qiankun';
 import { defineComponent, onMounted, ref } from 'vue';
-
-import microApps from '@/config/microApps';
-import menuList from '@/config/menuList';
-import type { MenuList } from '@/config/menuList';
-
-import LayoutHeader from './LayoutHeader.vue';
+import menuList from '../config/menuList';
+import type { MenuList } from '../config/menuList';
+import microApps from '../config/microApps';
 import LayoutAside from './LayoutAside.vue';
+import LayoutHeader from './LayoutHeader.vue';
 import LayoutNav from './LayoutNav.vue';
 
 export default defineComponent({

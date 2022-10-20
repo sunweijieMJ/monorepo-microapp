@@ -3,8 +3,8 @@
  * @date 2021-4-9
  */
 
+import type { AxiosRequestConfig, AxiosRequestHeaders } from 'axios';
 import { ElMessage } from 'element-plus';
-import type { AxiosRequestHeaders, AxiosRequestConfig } from 'axios';
 import getUrl from './config';
 import instance from './intercept';
 import type { CustomResponse } from './types';

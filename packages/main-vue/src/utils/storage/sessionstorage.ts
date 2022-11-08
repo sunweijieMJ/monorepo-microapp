@@ -1,17 +1,30 @@
 /**
- * 存储封装对外提供统一的方法及接口使用
- * sessionStorage 存储到客户端
+ * @description SessionStorage的封装
  */
+
 class SessionStorageAPI {
-  static set(key: string, value: string): void {
+  /**
+   * @description 设置sessionStorage
+   * @param key 键
+   * @param value 值
+   */
+  static set(key: string, value: string) {
     return sessionStorage.setItem(key, value);
   }
 
-  static get(key: string): string {
+  /**
+   * @description 获取sessionStorage
+   * @param key 键
+   */
+  static get(key: string) {
     return sessionStorage.getItem(key) ?? '';
   }
 
-  static remove(key: string): void {
+  /**
+   * @description 移除sessionStorage
+   * @param key 键
+   */
+  static remove(key: string) {
     return sessionStorage.removeItem(key);
   }
 }

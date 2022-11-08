@@ -1,20 +1,7 @@
 {
-  "BaseAbstract": {
-    "t1": "Request failed",
-    "t2": "Login timed out, please login again"
-  },
-  "BaseIntercept": {
-    "t1": "The operation is too frequent, please try again later"
-  },
-  "BaseLogin": {
-    "t1": "Log in",
-    "t2": "username",
-    "t3": "password",
-    "t4": "verification code",
-    "t5": "Keep me logged in"
-  },
-  "BaseRouter": {
-    "t1": "Log in",
-    "t2": "sub app"
-  }
+  "BaseAbstract.t1": "Request failed",
+  "BaseAbstract.t2": "Login timed out, please login again",
+  "BaseIntercept.t1": "The operation is too frequent, please try again later",
+  "BaseRouter.t1": "Log in",
+  "BaseRouter.t2": "Sub App"
 }

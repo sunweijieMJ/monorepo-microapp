@@ -1,17 +1,37 @@
 /**
- * 存储封装对外提供统一的方法及接口使用
- * Cookie 存储到客户端
+ * @description Cookie的封装
  */
+
 class CookieAPI {
-  static set(key: string, value: string, expire = 3600, path = '/'): void {
-    const date = new Date();
-    date.setSeconds(date.getSeconds() + expire);
+  /**
+   * @description 设置cookie
+   * @param key 键
+   * @param value 值
+   * @param [expire] 过期时间
+   * @param [domain] 域名
+   * @param [path] 路径
+   */
+  static set(
+    key: string,
+    value: string,
+    expire: string | number | Date = '',
+    domain = '',
+    path = '/'
+  ) {
+    let expireTime = '';
+    if (expire) {
+      expireTime = new Date(expire).toUTCString();
+    }
     document.cookie = `${key}=${encodeURIComponent(
       value
-    )}; expires=${date.toUTCString()}; Path=${path}`;
+    )}; expires=${expireTime};domain=${domain};path=${path}`;
   }
 
-  static get(key: string): string {
+  /**
+   * @description 获取cookie
+   * @param key 键
+   */
+  static get(key: string) {
     if (document.cookie.length > 0) {
       let cStart = document.cookie.indexOf(`${key}=`);
       if (cStart !== -1) {
@@ -24,8 +44,12 @@ class CookieAPI {
     return '';
   }
 
-  static remove(key: string): void {
-    CookieAPI.set(key, '', -1);
+  /**
+   * @description 移除cookie
+   * @param key 键
+   */
+  static remove(key: string) {
+    CookieAPI.set(key, '', new Date(0).toUTCString());
   }
 }
 

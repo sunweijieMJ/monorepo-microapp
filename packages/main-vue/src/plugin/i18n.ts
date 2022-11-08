@@ -6,8 +6,8 @@ import enLocale from '@/locale/en.json';
 import zhLocale from '@/locale/zh-CN.json';
 import storage from '@/utils/storage';
 
-if (!storage('localstorage').get('i18n')) {
-  storage('localstorage').set('i18n', 'zh-CN');
+if (!storage('localStorage').get('i18n')) {
+  storage('localStorage').set('i18n', 'zh-CN');
 }
 
 const messages = {
@@ -24,7 +24,8 @@ const messages = {
 };
 
 const i18n = createI18n({
-  locale: storage('localstorage').get('i18n'),
+  legacy: false,
+  locale: storage('localStorage').get('i18n'),
   fallbackLocale: zhElement.name,
   messages,
 });

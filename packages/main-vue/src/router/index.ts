@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import type { RouteRecordRaw } from 'vue-router';
-import { i18n } from '@/plugin';
+import i18n from '@/plugin/i18n';
 
 const routes: RouteRecordRaw[] = [
   {

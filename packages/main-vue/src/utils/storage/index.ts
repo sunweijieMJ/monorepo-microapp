@@ -1,23 +1,25 @@
-/**
- * 统一封装对外的storage接口
- */
 import CookieAPI from './cookie';
-import IndexedDBAPI from './indexDB';
-import LocalStorageAPI from './localstorage';
-import SessionStorageAPI from './sessionstorage';
+import IndexedDBAPI from './indexedDB';
+import LocalStorageAPI from './localStorage';
+import SessionStorageAPI from './sessionStorage';
 
 const UseStoreObj = {
-  indexDB: IndexedDBAPI,
+  indexedDB: IndexedDBAPI,
   cookie: CookieAPI,
-  sessionstorage: SessionStorageAPI,
-  localstorage: LocalStorageAPI,
+  sessionStorage: SessionStorageAPI,
+  localStorage: LocalStorageAPI,
 };
 
-export const indexDB = IndexedDBAPI;
-export const cookie = CookieAPI;
-export const sessionstorage = SessionStorageAPI;
-export const localstorage = LocalStorageAPI;
-
-export default <T extends keyof typeof UseStoreObj>(type: T) => {
+const StorageApi = <T extends keyof typeof UseStoreObj>(type: T) => {
   return UseStoreObj[type];
 };
+
+export const indexedDB = IndexedDBAPI;
+export const cookie = CookieAPI;
+export const sessionStorage = SessionStorageAPI;
+export const localStorage = LocalStorageAPI;
+
+/**
+ * @description 统一封装对外暴露的storage接口
+ */
+export default StorageApi;

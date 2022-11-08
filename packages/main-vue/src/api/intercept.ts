@@ -1,32 +1,32 @@
 import axios from 'axios';
-import type { AxiosRequestConfig, Canceler, Method } from 'axios';
-import { i18n } from '@/plugin';
+import type { AxiosRequestConfig, Canceler } from 'axios';
 import {
   showFullScreenLoading,
   tryHideFullScreenLoading,
-} from '@/utils/loading';
-import storage from '@/utils/storage';
+} from '../utils/loading';
+import type { CustomRequestConfig } from './types';
+import i18n from '@/plugin/i18n';
 
 // 定义接口
-interface PendingList {
-  url?: string;
-  method?: Method;
-  params: Record<string, string>;
-  data: Record<string, any>;
-  cancel: Canceler;
-}
+type PendingList = Pick<
+  AxiosRequestConfig,
+  'url' | 'method' | 'params' | 'data'
+> & { cancel: Canceler };
 
-const pendingList: PendingList[] = [];
 const { CancelToken } = axios;
+const pendingList: PendingList[] = [];
+const TIMEOUT = 10 * 60 * 1000;
+
 // axios 实例
 const instance = axios.create({
-  timeout: 10 * 60 * 1000,
+  timeout: TIMEOUT,
   responseType: 'json',
 });
 
 // 移除重复请求
-const removePending = (config: AxiosRequestConfig) => {
-  pendingList.forEach((item, index) => {
+const removePending = (config: CustomRequestConfig) => {
+  for (let i = pendingList.length - 1; i >= 0; i--) {
+    const item = pendingList[i];
     // 当前请求在数组中存在时执行函数体
     if (
       item.url === config.url &&
@@ -37,28 +37,32 @@ const removePending = (config: AxiosRequestConfig) => {
       // 执行取消操作
       item.cancel(`${i18n.global.t('BaseIntercept.t1')}`);
       // 从数组中移除记录
-      pendingList.splice(index, 1);
+      pendingList.splice(i, 1);
     }
-  });
+  }
 };
 
 // 添加请求拦截器
 instance.interceptors.request.use(
-  (request: AxiosRequestConfig) => {
+  (request) => {
     if (request?.headers?.showLoading) {
-      showFullScreenLoading(request?.headers?.targetDom as string);
+      showFullScreenLoading();
     }
 
     removePending(request);
-    request.cancelToken = new CancelToken((c: Canceler) => {
-      pendingList.push({
-        url: request.url,
-        method: request.method as Method,
-        params: request.params,
-        data: request.data,
-        cancel: c,
+
+    if (!request.cancelToken) {
+      request.cancelToken = new CancelToken((c: Canceler) => {
+        pendingList.push({
+          url: request.url,
+          method: request.method,
+          params: request.params,
+          data: request.data,
+          cancel: c,
+        });
       });
-    });
+    }
+
     return request;
   },
   (error) => {
@@ -84,8 +88,8 @@ instance.interceptors.response.use(
 
     return response;
   },
-  (error) => {
-    if (error.config?.headers?.showLoading) {
+  async (error) => {
+    if (error.config?.headers?.showLoading || axios.isCancel(error)) {
       tryHideFullScreenLoading();
     }
 
@@ -94,37 +98,31 @@ instance.interceptors.response.use(
     switch (response?.status) {
       case 401:
         // token失效
-        storage('sessionstorage').remove('token');
-        storage('localstorage').remove('token');
-        storage('localstorage').remove('vuex');
-        window.location.href = `/login?redirect=${encodeURIComponent(
-          window.location.href
-        )}`;
         break;
       case 403:
         // 没有权限
-        // Vue.prototype.$serveError({ type: '403' });
         break;
       case 404:
-        // 接口地址错误
-        // Vue.prototype.$serveError({ type: '404' });
+        // 地址错误
         break;
       case 500:
         // 服务端错误
-        // Vue.prototype.$serveError({ type: '500' });
         break;
       case 503:
         // 服务端错误
-        // Vue.prototype.$serveError({ type: '503' });
         break;
       default:
         break;
     }
 
-    // 超时重新请求
+    /**
+     * 超时重新请求
+     */
     const config = error.config;
-    // 全局的请求次数,请求的间隙
-    const [RETRY_COUNT, RETRY_DELAY] = [0, 1000];
+
+    // 再次请求次数,请求间隔时间
+    const RETRY_COUNT = config?.headers?.retryCount ?? 0;
+    const RETRY_DELAY = config?.headers?.retryDelay ?? 1000;
 
     if (config && RETRY_COUNT) {
       // 设置用于跟踪重试计数的变量
@@ -136,13 +134,13 @@ instance.interceptors.response.use(
       // 增加重试计数
       config.retryCount++;
       // 创造新的Promise来处理指数后退
-      const backoff = new Promise((resolve) => {
+      const backOff = new Promise((resolve) => {
         setTimeout(() => {
           resolve(null);
-        }, RETRY_DELAY || 1);
+        }, RETRY_DELAY);
       });
       // instance重试请求的Promise
-      return backoff.then(() => instance(config));
+      return backOff.then(() => instance(config));
     }
 
     // eslint-disable-next-line

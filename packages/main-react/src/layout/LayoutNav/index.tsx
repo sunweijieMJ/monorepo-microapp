@@ -13,10 +13,10 @@ const LayoutNav: React.FC = () => {
   };
 
   const items = [
-    { label: 'fp HomePage1', key: '/micro-fp/HomePage1' },
-    { label: 'fp HomePage2', key: '/micro-fp/HomePage2' },
-    { label: 'opod HomePage1', key: '/micro-opod/HomePage1' },
-    { label: 'opod HomePage2', key: '/micro-opod/HomePage2' },
+    { label: 'react HomePage1', key: '/micro-react/HomePage1' },
+    { label: 'react HomePage2', key: '/micro-react/HomePage2' },
+    { label: 'vue HomePage1', key: '/micro-vue/HomePage1' },
+    { label: 'vue HomePage2', key: '/micro-vue/HomePage2' },
   ];
 
   return (

@@ -3,43 +3,61 @@
  * @date 2021-4-9
  */
 
-import type { AxiosRequestConfig, AxiosRequestHeaders } from 'axios';
 import { ElMessage } from 'element-plus';
-import getUrl from './config';
+import translUrlDict from './config';
 import instance from './intercept';
-import type { CustomResponse } from './types';
-import { i18n } from '@/plugin';
+import type { CustomRequestConfig, CustomResponse } from './types';
+import i18n from '@/plugin/i18n';
 import storage from '@/utils/storage';
 
 class Abstract {
-  protected baseURL = process.env.VUE_APP_BASEURL;
+  protected baseURL = '';
 
   protected headers = {
-    ContentType: 'application/json;charset=UTF-8',
+    'Content-Type': 'application/json;charset=UTF-8',
   };
 
+  private get defaultBaseURL() {
+    return storage('sessionStorage').get('VUE_APP_BaseURL');
+  }
+
   private apiAxios({
-    baseURL = this.baseURL,
+    baseURL = this.baseURL || this.defaultBaseURL,
     headers,
     method,
     url,
+    urlDict,
     data,
     params,
     responseType,
-  }: AxiosRequestConfig): Promise<CustomResponse> {
-    const newHeaders: AxiosRequestHeaders = {
-      'x-language': storage('localstorage').get('i18n'),
+    cancelToken,
+    onUploadProgress,
+    onDownloadProgress,
+  }: CustomRequestConfig): Promise<CustomResponse> {
+    // token
+    const token =
+      storage('sessionStorage').get('token') ||
+      storage('localStorage').get('token');
+    // 激活语言和默认语言
+    const activeLanguage = storage('localStorage').get('i18n');
+    const xLanguage = activeLanguage;
+
+    const newHeaders = {
+      'x-language': xLanguage,
       showLoading: true,
-      token:
-        storage('sessionstorage').get('token') ||
-        storage('localstorage').get('token'),
+      token,
       ...this.headers,
       ...headers,
     };
 
-    // url解析
-    const urlArr = (url as string).split('.');
-    url = getUrl(urlArr[0], urlArr[1]);
+    // url字典解析
+    if (!url) {
+      if (Array.isArray(urlDict)) {
+        url = translUrlDict(...urlDict);
+      } else {
+        url = translUrlDict(urlDict);
+      }
+    }
 
     return new Promise((resolve, reject) => {
       instance({
@@ -50,39 +68,40 @@ class Abstract {
         params,
         data,
         responseType,
+        cancelToken,
+        onUploadProgress,
+        onDownloadProgress,
       })
-        .then((res) => {
+        .then((response) => {
+          if (responseType === 'blob' || response.config.headers?.primitive) {
+            resolve({
+              status: true,
+              message: 'success',
+              data: response?.data,
+              response,
+            });
+            return;
+          }
           // 200:服务端业务处理正常结束
-          if (res.status === 200) {
-            if (res.data.success) {
-              resolve({
-                status: true,
-                message: 'success',
-                data: res.data?.data,
-                origin: res.data,
-              });
-            } else {
-              ElMessage.error(
-                res.data?.errorMessage ||
-                  `${url}${i18n.global.t('BaseAbstract.t1')}`
-              );
-              resolve({
-                status: false,
-                message:
-                  res.data?.errorMessage ||
-                  `${url}${i18n.global.t('BaseAbstract.t1')}`,
-                data: res.data?.data,
-                origin: res.data,
-              });
-            }
+          if (response.status === 200 && response.data.success) {
+            resolve({
+              status: true,
+              message: 'success',
+              data: response.data?.data,
+              response,
+            });
           } else {
             resolve({
               status: false,
               message:
-                res.data?.errorMessage ||
-                `${url}${i18n.global.t('BaseAbstract.t1')}`,
-              data: null,
+                response.data?.errorMessage ||
+                `i18n.global.t('BaseAbstract.t1')}`,
+              data: response.data?.data,
+              response,
             });
+            ElMessage.error(
+              response.data?.errorMessage || `i18n.global.t('BaseAbstract.t1')}`
+            );
           }
         })
         .catch((err) => {
@@ -98,9 +117,8 @@ class Abstract {
                 `${url}${i18n.global.t('BaseAbstract.t1')}`;
               break;
           }
-          // Vue.prototype.$toast({ message });
           // eslint-disable-next-line
-          reject({ status: false, message, data: null });
+          reject({ status: false, message, data: null, response: err });
         });
     });
   }
@@ -112,18 +130,26 @@ class Abstract {
     baseURL,
     headers,
     url,
+    urlDict,
     data,
     params,
     responseType,
-  }: AxiosRequestConfig) {
+    cancelToken,
+    onUploadProgress,
+    onDownloadProgress,
+  }: CustomRequestConfig) {
     return this.apiAxios({
       baseURL,
       headers,
       method: 'GET',
       url,
+      urlDict,
       data,
       params,
       responseType,
+      cancelToken,
+      onUploadProgress,
+      onDownloadProgress,
     });
   }
 
@@ -134,18 +160,26 @@ class Abstract {
     baseURL,
     headers,
     url,
+    urlDict,
     data,
     params,
     responseType,
-  }: AxiosRequestConfig) {
+    cancelToken,
+    onUploadProgress,
+    onDownloadProgress,
+  }: CustomRequestConfig) {
     return this.apiAxios({
       baseURL,
       headers,
       method: 'POST',
       url,
+      urlDict,
       data,
       params,
       responseType,
+      cancelToken,
+      onUploadProgress,
+      onDownloadProgress,
     });
   }
 
@@ -156,18 +190,26 @@ class Abstract {
     baseURL,
     headers,
     url,
+    urlDict,
     data,
     params,
     responseType,
-  }: AxiosRequestConfig) {
+    cancelToken,
+    onUploadProgress,
+    onDownloadProgress,
+  }: CustomRequestConfig) {
     return this.apiAxios({
       baseURL,
       headers,
       method: 'PUT',
       url,
+      urlDict,
       data,
       params,
       responseType,
+      cancelToken,
+      onUploadProgress,
+      onDownloadProgress,
     });
   }
 
@@ -178,18 +220,26 @@ class Abstract {
     baseURL,
     headers,
     url,
+    urlDict,
     data,
     params,
     responseType,
-  }: AxiosRequestConfig) {
+    cancelToken,
+    onUploadProgress,
+    onDownloadProgress,
+  }: CustomRequestConfig) {
     return this.apiAxios({
       baseURL,
       headers,
       method: 'DELETE',
       url,
+      urlDict,
       data,
       params,
       responseType,
+      cancelToken,
+      onUploadProgress,
+      onDownloadProgress,
     });
   }
 }

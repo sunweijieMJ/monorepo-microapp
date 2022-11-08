@@ -14,6 +14,7 @@ export default defineComponent({
   name: 'App',
   setup() {
     const $i18n = useI18n();
+
     const messages = $i18n.messages.value as Record<string, any>;
     const locale = messages[$i18n.locale.value];
 

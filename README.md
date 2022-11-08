@@ -1,6 +1,6 @@
 # Monorepo Microapp
 
-> 使用 `monorepo`, `qiankun`, `typescript` 等技术搭建的一个微前端模版工程
+> 基于 `monorepo` 架构搭建的一个微前端模版工程
 
 ## 使用文档
 
@@ -57,6 +57,11 @@
 
 - 使用 `eslint`， `stylelint` 校验代码，`prettier` 格式化代码，`i18n Ally` 翻译多语言。需要安装相关的 `vscode` 插件
 
+  1. [`eslint`](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
+  2. [`stylelint`](https://marketplace.visualstudio.com/items?itemName=stylelint.vscode-stylelint)
+  3. [`prettier`](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
+  4. [`i18n Ally`](https://marketplace.visualstudio.com/items?itemName=Lokalise.i18n-ally)
+
 - 全局安装 `pnpm`
 
   ```bash
@@ -68,6 +73,8 @@
 - [x] 构建主应用
 - [x] 构建子应用
 - [x] 应用间通信
+- [x] 资源共享
+- [x] 内存溢出
 - [x] 打包部署
 
 ### 构建主应用
@@ -78,9 +85,18 @@
 ```tsx
 import classnames from 'classnames';
 import _ from 'lodash';
-import { loadMicroApp } from 'qiankun';
+import {
+  addGlobalUncaughtErrorHandler, // 添加全局未捕获异常处理器
+  loadMicroApp, // 手动加载一个微应用
+  prefetchApps, // 预加载子应用
+  registerMicroApps, // 注册子应用方法
+  runAfterFirstMounted, // 第一个微应用 mount
+  setDefaultMountApp, // 设默认启用的子应用
+  start,
+} from 'qiankun';
 import type { MicroApp } from 'qiankun';
 import React, { useEffect } from 'react';
+import type { MenuList } from '../../config/menuList';
 import microApps from '../../config/microApps';
 import LayoutAside from '../LayoutAside';
 import LayoutHeader from '../LayoutHeader';
@@ -111,6 +127,35 @@ const manualLoadMicroApps = (name: string) => {
   }
 };
 
+// 自动加载子应用
+const autoLoadMicroApps = (menuList: MenuList[]) => {
+  let defaultPath = menuList[0].routePath;
+
+  // 预加载子应用
+  prefetchApps(microAppList);
+
+  // 注册子应用
+  registerMicroApps(microAppList);
+
+  // 设置默认子应用
+  const activePath = window.location.pathname.split('/')[1];
+  if (activePath) {
+    defaultPath = `/${activePath}`;
+  }
+  setDefaultMountApp(defaultPath);
+
+  // 启动微服务
+  start({
+    prefetch: true,
+  });
+
+  // 第一个微应用 mount 后需要调用的方法
+  runAfterFirstMounted(() => console.log('runAfterFirstMounted'));
+
+  // 设置全局未捕获异常处理器
+  addGlobalUncaughtErrorHandler((event) => console.log(event));
+};
+
 const Layout: React.FC = () => {
   useEffect(() => {
     manualLoadMicroApps(window.location.pathname.split('/')[1]);
@@ -137,21 +182,6 @@ const Layout: React.FC = () => {
 };
 
 export default Layout;
-```
-
-> 主应用的 `craco.config.js`
-
-```javascript
-const port = 3000;
-
-module.exports = {
-  devServer: {
-    https: false,
-    headers: {
-      'Access-Control-Allow-Origin': '*',
-    },
-  },
-};
 ```
 
 **注意** 主应用设置 `publicPath: '/'` 会造成子应用配置的 `publicPath` 失效，导致无限循环刷新页面。
@@ -239,7 +269,7 @@ module.exports = {
 
 ### 应用间通信
 
-> `qiankun` 官方提供了 `api` 去解决这个问题。这里只做基本演示，也可以用其他中间件去处理应用通信的问题
+> `qiankun` 官方提供了 `api` 去解决这个问题。这里只做基本演示，也可以用其他中间件去处理应用通信的问题。例如 `rxjs`，`vuex`，`redux`
 
 - 主应用
 
@@ -270,6 +300,26 @@ export function mount(props) {
   props.setGlobalState(state);
 }
 ```
+
+### 资源共享
+
+1.共享模块
+
+- 该项目采用的是 `monorepo` 架构来共享依赖
+- 也可采用 `npm` `Webpack Externals` `Webpack DLL` 等方式来共享模块
+
+2.共享资源
+
+- `props` 传递
+- `window` 传递
+
+### 内存溢出
+
+> `qiankun` 会将微应用的 `JS/CSS` 内容都记录在全局变量中，如果一直重复的挂载应用没有卸载，会导致内存占用过多，导致页面卡顿
+
+- 微应用卸载的时候清空微应用注册的附加内容及 `DOM` 元素
+- 设置自动销毁时间，去销毁那些长时间挂载的应用
+- 设置最大运行应用数量，超过规定的数量的时候吧第一个应用销毁
 
 ### 打包部署
 

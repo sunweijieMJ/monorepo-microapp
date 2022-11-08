@@ -1,23 +1,21 @@
+import classnames from 'classnames';
+import _ from 'lodash';
+import { loadMicroApp } from 'qiankun';
+import type { MicroApp } from 'qiankun';
 import React, { useEffect } from 'react';
-import {
-  loadMicroApp, // 手动加载一个微应用
-} from 'qiankun';
-
 import microApps from '../../config/microApps';
-
-import LayoutNav from './../LayoutNav';
-import LayoutAside from './../LayoutAside';
-import LayoutHeader from './../LayoutHeader';
+import LayoutAside from '../LayoutAside';
+import LayoutHeader from '../LayoutHeader';
+import LayoutNav from '../LayoutNav';
 import './index.scss';
 
-// loadMicroApp的实例对象
-let activeApp: any = null;
+let activeApp: MicroApp | null = null;
 let activeName = window.location.pathname.split('/')[1];
 const microAppList = microApps;
 
 // 手动加载子应用
 const manualLoadMicroApps = (name: string) => {
-  const microApp = microAppList.find((item) => item.name === name);
+  const microApp = _.find(microAppList, (item) => item.name === name);
 
   if (microApp) {
     activeName = name;
@@ -38,7 +36,6 @@ const manualLoadMicroApps = (name: string) => {
 const Layout: React.FC = () => {
   useEffect(() => {
     manualLoadMicroApps(window.location.pathname.split('/')[1]);
-    // microAppList.forEach((item) => loadMicroApp(item));
   }, []);
 
   return (
@@ -51,10 +48,9 @@ const Layout: React.FC = () => {
           <div
             id={item.name}
             key={index}
-            className={[
-              'micro-app',
-              activeName === item.name ? 'active-app' : '',
-            ].join(' ')}
+            className={classnames('micro-app', {
+              'active-app': activeName === item.name,
+            })}
           ></div>
         );
       })}

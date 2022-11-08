@@ -1,20 +1,22 @@
-import React from 'react';
 import { Menu } from 'antd';
 import type { MenuProps } from 'antd';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const LayoutNav: React.FC = () => {
   let activeIndex = window.location.pathname;
+  const navigate = useNavigate();
 
   const handleClick: MenuProps['onClick'] = (e) => {
     activeIndex = e.key;
-    window.location.href = e.key;
+    navigate(activeIndex);
   };
 
   const items = [
-    { label: 'vue HomePage1', key: '/micro-vue/HomePage1' },
-    { label: 'vue HomePage2', key: '/micro-vue/HomePage2' },
-    { label: 'react HomePage1', key: '/micro-react/HomePage1' },
-    { label: 'react HomePage2', key: '/micro-react/HomePage2' },
+    { label: 'fp HomePage1', key: '/micro-fp/HomePage1' },
+    { label: 'fp HomePage2', key: '/micro-fp/HomePage2' },
+    { label: 'opod HomePage1', key: '/micro-opod/HomePage1' },
+    { label: 'opod HomePage2', key: '/micro-opod/HomePage2' },
   ];
 
   return (

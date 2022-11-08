@@ -1070,6 +1070,7 @@ module.exports = {
     '**/*.ogg',
     '**/*.yml',
     '**/*.yaml',
+    'README.md',
     'packages/**/*',
     '.gitignore',
     '.prettierrc',

@@ -13,7 +13,6 @@
   </div>
 </template>
 <script lang="ts">
-// 导入乾坤函数
 import {
   addGlobalUncaughtErrorHandler, // 添加全局未捕获异常处理器
   loadMicroApp, // 手动加载一个微应用
@@ -25,7 +24,6 @@ import {
 } from 'qiankun';
 import type { MicroApp } from 'qiankun';
 import { defineComponent, onMounted, ref } from 'vue';
-import menuList from '../config/menuList';
 import type { MenuList } from '../config/menuList';
 import microApps from '../config/microApps';
 import LayoutAside from './LayoutAside.vue';
@@ -46,9 +44,7 @@ export default defineComponent({
     const microAppList = microApps;
 
     onMounted(() => {
-      // autoLoadMicroApps(menuList);
       manualLoadMicroApps(window.location.pathname.split('/')[1]);
-      // microAppList.forEach((item) => loadMicroApp(item));
     });
 
     // 手动加载子应用

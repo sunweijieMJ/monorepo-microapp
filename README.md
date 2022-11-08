@@ -1,8 +1,8 @@
 # Monorepo Microapp
 
-> 基于 `monorepo` 架构搭建的一个微前端模版工程
+> 基于 `monorepo` 架构搭建的微前端模版工程
 
-## 使用文档
+## 说明文档
 
 - [目录结构](#目录结构)
 - [开发环境](#开发环境)
@@ -57,10 +57,10 @@
 
 - 使用 `eslint`， `stylelint` 校验代码，`prettier` 格式化代码，`i18n Ally` 翻译多语言。需要安装相关的 `vscode` 插件
 
-  1. [`eslint`](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
-  2. [`stylelint`](https://marketplace.visualstudio.com/items?itemName=stylelint.vscode-stylelint)
-  3. [`prettier`](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
-  4. [`i18n Ally`](https://marketplace.visualstudio.com/items?itemName=Lokalise.i18n-ally)
+  - [`eslint`](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
+  - [`stylelint`](https://marketplace.visualstudio.com/items?itemName=stylelint.vscode-stylelint)
+  - [`prettier`](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
+  - [`i18n Ally`](https://marketplace.visualstudio.com/items?itemName=Lokalise.i18n-ally)
 
 - 全局安装 `pnpm`
 
@@ -183,8 +183,6 @@ const Layout: React.FC = () => {
 
 export default Layout;
 ```
-
-**注意** 主应用设置 `publicPath: '/'` 会造成子应用配置的 `publicPath` 失效，导致无限循环刷新页面。
 
 ### 构建子应用
 

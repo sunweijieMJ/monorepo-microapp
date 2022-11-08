@@ -1,15 +1,13 @@
 import { Menu } from 'antd';
 import type { MenuProps } from 'antd';
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 
 const LayoutNav: React.FC = () => {
   let activeIndex = window.location.pathname;
-  const navigate = useNavigate();
 
   const handleClick: MenuProps['onClick'] = (e) => {
     activeIndex = e.key;
-    navigate(activeIndex);
+    window.location.href = activeIndex;
   };
 
   const items = [

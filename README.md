@@ -55,7 +55,7 @@
 
 > 该项目基于 `monorepo` 的架构，`pnpm` 安装依赖，`typescript` 编写代码。
 
-- 使用 `eslint`， `stylelint` 校验代码，`prettier` 格式化代码。需要安装相关的 `vscode` 插件
+- 使用 `eslint`， `stylelint` 校验代码，`prettier` 格式化代码，`i18n Ally` 翻译多语言。需要安装相关的 `vscode` 插件
 
 - 全局安装 `pnpm`
 

@@ -13,18 +13,9 @@
   </div>
 </template>
 <script lang="ts">
-import {
-  addGlobalUncaughtErrorHandler, // 添加全局未捕获异常处理器
-  loadMicroApp, // 手动加载一个微应用
-  prefetchApps, // 预加载子应用
-  registerMicroApps, // 注册子应用方法
-  runAfterFirstMounted, // 第一个微应用 mount
-  setDefaultMountApp, // 设默认启用的子应用
-  start,
-} from 'qiankun';
+import { loadMicroApp } from 'qiankun';
 import type { MicroApp } from 'qiankun';
 import { defineComponent, onMounted, ref } from 'vue';
-import type { MenuList } from '../config/menuList';
 import microApps from '../config/microApps';
 import LayoutAside from './LayoutAside.vue';
 import LayoutHeader from './LayoutHeader.vue';
@@ -66,35 +57,6 @@ export default defineComponent({
         // 如果微应用是初次加载，那么不用先卸载之前挂载的应用直接加载
         activeApp.value = loadMicroApp(microApp);
       }
-    };
-
-    // 自动加载子应用
-    const autoLoadMicroApps = (menuList: MenuList[]) => {
-      let defaultPath = menuList[0].routePath;
-
-      // 预加载子应用
-      prefetchApps(microAppList);
-
-      // 注册子应用
-      registerMicroApps(microAppList);
-
-      // 设置默认子应用
-      const activePath = window.location.pathname.split('/')[1];
-      if (activePath) {
-        defaultPath = `/${activePath}`;
-      }
-      setDefaultMountApp(defaultPath);
-
-      // 启动微服务
-      start({
-        prefetch: true,
-      });
-
-      // 第一个微应用 mount 后需要调用的方法
-      runAfterFirstMounted(() => console.log('runAfterFirstMounted'));
-
-      // 设置全局未捕获异常处理器
-      addGlobalUncaughtErrorHandler((event) => console.log(event));
     };
 
     return {

@@ -5,7 +5,8 @@
   "scripts": {
     "start": "PORT=3000 craco start",
     "build": "craco build",
-    "test": "craco test"
+    "test": "craco test",
+    "analyzer": "ANALYZER=true craco build"
   },
   "eslintConfig": {
     "extends": [

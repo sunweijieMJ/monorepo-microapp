@@ -35,7 +35,7 @@ const removePending = (config: CustomRequestConfig) => {
       JSON.stringify(item.data) === JSON.stringify(config.data)
     ) {
       // 执行取消操作
-      item.cancel(`${i18n.global.t('BaseIntercept.t1')}`);
+      item.cancel(`${i18n.global.t('api.retry')}`);
       // 从数组中移除记录
       pendingList.splice(i, 1);
     }

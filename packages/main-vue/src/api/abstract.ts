@@ -94,13 +94,12 @@ class Abstract {
             resolve({
               status: false,
               message:
-                response.data?.errorMessage ||
-                `i18n.global.t('BaseAbstract.t1')}`,
+                response.data?.errorMessage || `i18n.global.t('api.fail')}`,
               data: response.data?.data,
               response,
             });
             ElMessage.error(
-              response.data?.errorMessage || `i18n.global.t('BaseAbstract.t1')}`
+              response.data?.errorMessage || `i18n.global.t('api.fail')}`
             );
           }
         })
@@ -108,13 +107,13 @@ class Abstract {
           let message: string;
           switch (err.status) {
             case 401:
-              message = `${i18n.global.t('BaseAbstract.t2')}`;
+              message = `${i18n.global.t('api.timeout')}`;
               break;
             default:
               message =
                 err?.data?.errorMessage ||
                 err?.message ||
-                `${url}${i18n.global.t('BaseAbstract.t1')}`;
+                `${url}${i18n.global.t('api.fail')}`;
               break;
           }
           // eslint-disable-next-line

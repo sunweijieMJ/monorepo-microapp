@@ -1,0 +1,8 @@
+{
+  "api.fail": "fail",
+  "api.retry": "retry",
+  "api.timeout": "timeout",
+  "layout.header": "header",
+  "layout.aside": "aside",
+  "views.login": "login"
+}

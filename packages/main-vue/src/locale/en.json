@@ -1,7 +1,0 @@
-{
-  "BaseAbstract.t1": "Request failed",
-  "BaseAbstract.t2": "Login timed out, please login again",
-  "BaseIntercept.t1": "The operation is too frequent, please try again later",
-  "BaseRouter.t1": "Log in",
-  "BaseRouter.t2": "Sub App"
-}

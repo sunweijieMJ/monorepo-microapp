@@ -1,7 +1,8 @@
 {
-  "BaseAbstract.t1": "请求失败",
-  "BaseAbstract.t2": "登录超时，请重新登录",
-  "BaseIntercept.t1": "操作太频繁，请稍后再试",
-  "BaseRouter.t1": "登录",
-  "BaseRouter.t2": "子应用"
+  "api.fail": "请求失败",
+  "api.retry": "操作太频繁，请稍后再试",
+  "api.timeout": "登录超时，请重新登录",
+  "layout.header": "header",
+  "layout.aside": "aside",
+  "views.login": "登录"
 }

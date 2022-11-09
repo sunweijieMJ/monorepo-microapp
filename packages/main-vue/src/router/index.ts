@@ -8,16 +8,13 @@ const routes: RouteRecordRaw[] = [
     name: 'Login',
     component: () => import('@/views/Login.vue'),
     meta: {
-      title: i18n.global.t('BaseRouter.t1'),
+      title: i18n.global.t('views.login'),
     },
   },
   {
     path: '/:catchAll(.*)',
     name: 'Layout',
     component: () => import('@/layout/index.vue'),
-    meta: {
-      title: i18n.global.t('BaseRouter.t2'),
-    },
   },
 ];
 

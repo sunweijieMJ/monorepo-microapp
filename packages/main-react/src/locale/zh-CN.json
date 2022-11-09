@@ -1,7 +1,7 @@
 {
-  "api.fail": "fail",
-  "api.retry": "loading",
-  "api.timeout": "timeout",
+  "api.fail": "请求失败",
+  "api.retry": "操作太频繁，请稍后再试",
+  "api.timeout": "登录超时，请重新登录",
   "layout.header": "header",
   "layout.aside": "aside"
 }

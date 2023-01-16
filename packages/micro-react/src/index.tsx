@@ -5,12 +5,19 @@ import './public-path';
 
 // eslint-disable-next-line no-underscore-dangle
 const POWERED_BY_QIANKUN = window.__POWERED_BY_QIANKUN__;
+let root: ReactDOM.Root | null = null;
 
-const root = ReactDOM.createRoot(
-  document.querySelector('#micro-react-root') as HTMLElement
-);
+function render(container?: ShadowRoot) {
+  if (container) {
+    root = ReactDOM.createRoot(
+      container.querySelector('#micro-react-root') as HTMLElement
+    );
+  } else {
+    root = ReactDOM.createRoot(
+      document.querySelector('#micro-react-root') as HTMLElement
+    );
+  }
 
-function render() {
   root.render(
     <React.StrictMode>
       <Router />
@@ -22,19 +29,19 @@ export async function bootstrap() {
   console.log('react bootstrap');
 }
 
-export async function mount() {
+export async function mount(props?: any) {
   console.log('react mount');
-  render();
+  render(props?.container);
 }
 
-export async function update() {
+export async function update(props?: any) {
   console.log('react update');
-  render();
+  render(props?.container);
 }
 
 export async function unmount() {
   console.log('react unmount');
-  root.unmount();
+  root?.unmount();
 }
 
 // 单独开发环境

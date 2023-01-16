@@ -9,7 +9,7 @@ import {
   setDefaultMountApp, // 设默认启用的子应用
   start,
 } from 'qiankun';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import type { MenuList } from '../../config/menuList';
 import menuList from '../../config/menuList';
 import microApps from '../../config/microApps';
@@ -19,8 +19,7 @@ import LayoutNav from '../LayoutNav';
 import './index.scss';
 
 const microAppList = microApps;
-// 当前激活应用名称
-let activeMicroAppName = '';
+
 // 子应用上限
 const microAppLimit = 10;
 
@@ -37,93 +36,102 @@ const getActiveMicroApp = (
   return activeMicroApp;
 };
 
-// 手动加载子应用
-const manualLoadMicroApps = (defaultPath?: string, singular = false) => {
-  const microApp = getActiveMicroApp(defaultPath);
-  if (window.activeMicroApp?.name === microApp?.name || !microApp) return;
+const Layout: React.FC = () => {
+  // 当前激活应用名称
+  let [activeMicroAppName, setActiveMicroAppName] = useState('');
 
-  // 单实例模式
-  if (singular) {
-    // 卸载前一个子应用
-    if (window.activeMicroApp?.getStatus() === 'MOUNTED') {
-      window.activeMicroApp.unmount();
-      window.activeMicroApp = null;
-      window.activatedMicroApp = [];
-      activeMicroAppName = '';
+  // 自动加载子应用
+  const autoLoadMicroApps = (menuList: MenuList[]) => {
+    let defaultPath = menuList[0].routePath;
+
+    // 预加载子应用
+    prefetchApps(microAppList);
+
+    // 注册子应用
+    registerMicroApps(microAppList);
+
+    // 设置默认子应用
+    const activePath = window.location.pathname.split('/')[1];
+    if (activePath) {
+      defaultPath = `/${activePath}`;
     }
+    setDefaultMountApp(defaultPath);
 
-    // 加载新的子应用
-    const newMicroApp = {
-      name: microApp.name,
-      ...loadMicroApp(microApp, { singular: true }),
-    };
-    newMicroApp.mountPromise.then(() => {
-      activeMicroAppName = microApp.name;
+    // 启动微服务
+    start({
+      prefetch: true,
     });
 
-    window.activeMicroApp = newMicroApp;
-    window.activatedMicroApp = [window.activeMicroApp];
-  } else {
-    const activeMicroApp = _.find(
-      window.activatedMicroApp,
-      (item) => item.name === microApp.name
-    );
+    // 第一个微应用 mount 后需要调用的方法
+    runAfterFirstMounted(() => console.log('runAfterFirstMounted'));
 
-    // 判断当前子应用是否加载过
-    if (activeMicroApp) {
-      window.activeMicroApp = activeMicroApp;
-      activeMicroApp.mountPromise.then(() => {
-        activeMicroAppName = microApp.name;
-      });
-    } else {
+    // 设置全局未捕获异常处理器
+    addGlobalUncaughtErrorHandler((event) => console.log(event));
+  };
+
+  // 手动加载子应用
+  const manualLoadMicroApps = (defaultPath?: string, singular = false) => {
+    const microApp = getActiveMicroApp(defaultPath);
+    if (window.activeMicroApp?.name === microApp?.name || !microApp) return;
+
+    // 单实例模式
+    if (singular) {
+      // 卸载前一个子应用
+      if (window.activeMicroApp?.getStatus() === 'MOUNTED') {
+        window.activeMicroApp.unmount();
+        window.activeMicroApp = null;
+        window.activatedMicroApp = [];
+        setActiveMicroAppName('');
+      }
+
+      // 加载新的子应用
       const newMicroApp = {
         name: microApp.name,
-        ...loadMicroApp(microApp),
+        ...loadMicroApp(microApp, {
+          singular: true,
+          sandbox: { strictStyleIsolation: true },
+        }),
       };
       newMicroApp.mountPromise.then(() => {
-        activeMicroAppName = microApp.name;
+        setActiveMicroAppName(microApp.name);
       });
 
       window.activeMicroApp = newMicroApp;
-      window.activatedMicroApp.push(window.activeMicroApp);
-      // 超出数量限制，卸载第一个
-      if (window.activatedMicroApp.length > microAppLimit) {
-        window.activatedMicroApp.shift()?.unmount();
+      window.activatedMicroApp = [window.activeMicroApp];
+    } else {
+      const activeMicroApp = _.find(
+        window.activatedMicroApp,
+        (item) => item.name === microApp.name
+      );
+
+      // 判断当前子应用是否加载过
+      if (activeMicroApp) {
+        window.activeMicroApp = activeMicroApp;
+        activeMicroApp.mountPromise.then(() => {
+          setActiveMicroAppName(microApp.name);
+        });
+      } else {
+        const newMicroApp = {
+          name: microApp.name,
+          ...loadMicroApp(microApp, {
+            singular: true,
+            sandbox: { strictStyleIsolation: true },
+          }),
+        };
+        newMicroApp.mountPromise.then(() => {
+          setActiveMicroAppName(microApp.name);
+        });
+
+        window.activeMicroApp = newMicroApp;
+        window.activatedMicroApp.push(window.activeMicroApp);
+        // 超出数量限制，卸载第一个
+        if (window.activatedMicroApp.length > microAppLimit) {
+          window.activatedMicroApp.shift()?.unmount();
+        }
       }
     }
-  }
-};
+  };
 
-// 自动加载子应用
-const autoLoadMicroApps = (menuList: MenuList[]) => {
-  let defaultPath = menuList[0].routePath;
-
-  // 预加载子应用
-  prefetchApps(microAppList);
-
-  // 注册子应用
-  registerMicroApps(microAppList);
-
-  // 设置默认子应用
-  const activePath = window.location.pathname.split('/')[1];
-  if (activePath) {
-    defaultPath = `/${activePath}`;
-  }
-  setDefaultMountApp(defaultPath);
-
-  // 启动微服务
-  start({
-    prefetch: true,
-  });
-
-  // 第一个微应用 mount 后需要调用的方法
-  runAfterFirstMounted(() => console.log('runAfterFirstMounted'));
-
-  // 设置全局未捕获异常处理器
-  addGlobalUncaughtErrorHandler((event) => console.log(event));
-};
-
-const Layout: React.FC = () => {
   useEffect(() => {
     // 设置默认子应用
     let defaultPath = '';
@@ -138,6 +146,7 @@ const Layout: React.FC = () => {
     if (!window.activatedMicroApp?.length) window.activatedMicroApp = [];
 
     manualLoadMicroApps(defaultPath);
+    // autoLoadMicroApps(menuList);
   }, []);
 
   return (
